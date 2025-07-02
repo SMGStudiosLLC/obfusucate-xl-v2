@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Obfuscator Pro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 100%);
+            min-height: 100vh;
+            color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(40, 40, 40, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 1200px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #007AFF 0%, #5AC8FA 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+
+        .editor-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .editor-section {
+            background: rgba(30, 30, 30, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .editor-title {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            color: #5AC8FA;
+            font-weight: 500;
+        }
+
+        textarea {
+            width: 100%;
+            height: 300px;
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            color: #e0e0e0;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+            font-size: 14px;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #007AFF;
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
+        }
+
+        .controls {
+            background: rgba(30, 30, 30, 0.5);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .strength-selector {
+            margin-bottom: 25px;
+        }
+
+        .strength-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: #5AC8FA;
+        }
+
+        .strength-options {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .strength-option {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .strength-option input[type="radio"] {
+            display: none;
+        }
+
+        .strength-option label {
+            display: block;
+            padding: 12px 20px;
+            background: rgba(40, 40, 40, 0.8);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .strength-option input[type="radio"]:checked + label {
+            background: rgba(0, 122, 255, 0.2);
+            border-color: #007AFF;
+            color: #5AC8FA;
+        }
+
+        .strength-option label:hover {
+            border-color: rgba(0, 122, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            flex: 1;
+            min-width: 150px;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #007AFF 0%, #5AC8FA 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 122, 255, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button.secondary {
+            background: linear-gradient(135deg, #48484A 0%, #636366 100%);
+        }
+
+        button.secondary:hover {
+            box-shadow: 0 10px 20px rgba(72, 72, 74, 0.3);
+        }
+
+        .stats {
+            background: rgba(30, 30, 30, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-label {
+            color: #888;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: 600;
+            color: #5AC8FA;
+        }
+
+        @media (max-width: 768px) {
+            .editor-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>HTML Obfuscator Pro</h1>
+        <p class="subtitle">Powerful code protection with military-grade obfuscation</p>
+        
+        <div class="editor-container">
+            <div class="editor-section">
+                <h2 class="editor-title">Original HTML</h2>
+                <textarea id="inputCode" placeholder="Paste your HTML code here..."></textarea>
+            </div>
+            
+            <div class="editor-section">
+                <h2 class="editor-title">Obfuscated Output</h2>
+                <textarea id="outputCode" placeholder="Obfuscated code will appear here..." readonly></textarea>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <div class="strength-selector">
+                <label class="strength-label">Obfuscation Strength</label>
+                <div class="strength-options">
+                    <div class="strength-option">
+                        <input type="radio" id="basic" name="strength" value="basic" checked>
+                        <label for="basic">Basic</label>
+                    </div>
+                    <div class="strength-option">
+                        <input type="radio" id="medium" name="strength" value="medium">
+                        <label for="medium">Medium</label>
+                    </div>
+                    <div class="strength-option">
+                        <input type="radio" id="strong" name="strength" value="strong">
+                        <label for="strong">Strong</label>
+                    </div>
+                    <div class="strength-option">
+                        <input type="radio" id="extreme" name="strength" value="extreme">
+                        <label for="extreme">Extreme</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button onclick="obfuscateCode()">Obfuscate</button>
+                <button onclick="decryptCode()" class="secondary">Decrypt</button>
+                <button onclick="clearAll()" class="secondary">Clear All</button>
+                <button onclick="downloadCode()" class="secondary">Download</button>
+            </div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-label">Original Size</div>
+                <div class="stat-value" id="originalSize">0 KB</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Obfuscated Size</div>
+                <div class="stat-value" id="obfuscatedSize">0 KB</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Compression Ratio</div>
+                <div class="stat-value" id="ratio">0%</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Obfuscation key for encryption/decryption
+        const OBFUSCATION_KEY = 'HTMLObfuscatorPro2024SecretKey';
+
+        function updateStats() {
+            const input = document.getElementById('inputCode').value;
+            const output = document.getElementById('outputCode').value;
+            
+            const originalSize = new Blob([input]).size;
+            const obfuscatedSize = new Blob([output]).size;
+            
+            document.getElementById('originalSize').textContent = 
+                originalSize > 1024 ? (originalSize / 1024).toFixed(2) + ' KB' : originalSize + ' B';
+            
+            document.getElementById('obfuscatedSize').textContent = 
+                obfuscatedSize > 1024 ? (obfuscatedSize / 1024).toFixed(2) + ' KB' : obfuscatedSize + ' B';
+            
+            const ratio = originalSize > 0 ? ((obfuscatedSize / originalSize) * 100).toFixed(1) : 0;
+            document.getElementById('ratio').textContent = ratio + '%';
+        }
+
+        function basicObfuscation(html) {
+            // Base64 encoding with markers
+            const encoded = btoa(unescape(encodeURIComponent(html)));
+            return `<script>document.write(decodeURIComponent(escape(atob('${encoded}'))));</script>`;
+        }
+
+        function mediumObfuscation(html) {
+            // Character code conversion
+            let obfuscated = '<script>var s="";';
+            for (let i = 0; i < html.length; i++) {
+                obfuscated += `s+=String.fromCharCode(${html.charCodeAt(i)});`;
+            }
+            obfuscated += 'document.write(s);</script>';
+            return obfuscated;
+        }
+
+        function strongObfuscation(html) {
+            // Hex encoding with eval
+            let hex = '';
+            for (let i = 0; i < html.length; i++) {
+                hex += html.charCodeAt(i).toString(16).padStart(2, '0');
+            }
+            return `<script>eval(function(p,a,c,k,e,d){e=function(c){return c};if(!''.replace(/^/,String)){while(c--){d[c]=k[c]||c}k=[function(e){return d[e]}];e=function(){return'\\\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\\\b'+e(c)+'\\\\b','g'),k[c])}}return p}('document.write(unescape("${hex}".replace(/([0-9a-f]{2})/gi,"%$1")))',62,2,'||'.split('|'),0,{}))</script>`;
+        }
+
+        function extremeObfuscation(html) {
+            // Multiple layers with encryption simulation
+            const b64 = btoa(unescape(encodeURIComponent(html)));
+            let encrypted = '';
+            for (let i = 0; i < b64.length; i++) {
+                encrypted += String.fromCharCode(b64.charCodeAt(i) ^ OBFUSCATION_KEY.charCodeAt(i % OBFUSCATION_KEY.length));
+            }
+            const finalB64 = btoa(encrypted);
+            
+            return `<script>(function(){var k='${OBFUSCATION_KEY}',d=atob('${finalB64}'),o='';for(var i=0;i<d.length;i++)o+=String.fromCharCode(d.charCodeAt(i)^k.charCodeAt(i%k.length));document.write(decodeURIComponent(escape(atob(o))))})();</script>`;
+        }
+
+        function obfuscateCode() {
+            const input = document.getElementById('inputCode').value;
+            const strength = document.querySelector('input[name="strength"]:checked').value;
+            
+            if (!input.trim()) {
+                alert('Please enter HTML code to obfuscate');
+                return;
+            }
+            
+            let output;
+            switch (strength) {
+                case 'basic':
+                    output = basicObfuscation(input);
+                    break;
+                case 'medium':
+                    output = mediumObfuscation(input);
+                    break;
+                case 'strong':
+                    output = strongObfuscation(input);
+                    break;
+                case 'extreme':
+                    output = extremeObfuscation(input);
+                    break;
+            }
+            
+            document.getElementById('outputCode').value = output;
+            updateStats();
+        }
+
+        function decryptCode() {
+            const output = document.getElementById('outputCode').value;
+            
+            if (!output.trim()) {
+                alert('Please obfuscate code first or paste obfuscated code');
+                return;
+            }
+            
+            try {
+                // Try to extract and decrypt based on pattern matching
+                let decrypted = '';
+                
+                // Basic decryption (Base64)
+                const base64Match = output.match(/atob\('([^']+)'\)/);
+                if (base64Match) {
+                    decrypted = decodeURIComponent(escape(atob(base64Match[1])));
+                }
+                
+                // Medium decryption (fromCharCode)
+                const charCodeMatch = output.match(/fromCharCode\((\d+)\)/g);
+                if (charCodeMatch && !decrypted) {
+                    decrypted = charCodeMatch.map(match => {
+                        const code = match.match(/\d+/)[0];
+                        return String.fromCharCode(parseInt(code));
+                    }).join('');
+                }
+                
+                // For strong and extreme, show a message
+                if (!decrypted) {
+                    alert('This obfuscation level requires the original code or specialized decryption tools');
+                    return;
+                }
+                
+                document.getElementById('inputCode').value = decrypted;
+                updateStats();
+            } catch (e) {
+                alert('Unable to decrypt this code. It may be corrupted or use an unsupported obfuscation method.');
+            }
+        }
+
+        function clearAll() {
+            document.getElementById('inputCode').value = '';
+            document.getElementById('outputCode').value = '';
+            updateStats();
+        }
+
+        function downloadCode() {
+            const output = document.getElementById('outputCode').value;
+            
+            if (!output.trim()) {
+                alert('Please obfuscate code first');
+                return;
+            }
+            
+            const blob = new Blob([output], { type: 'text/html' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'obfuscated.html';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Update stats on input change
+        document.getElementById('inputCode').addEventListener('input', updateStats);
+        document.getElementById('outputCode').addEventListener('input', updateStats);
+    </script>
+</body>
+</html>
